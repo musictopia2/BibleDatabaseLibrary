@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibleDatabaseLibrary", "BibleDatabaseLibrary.csproj", "{2023DC2D-89C0-4AB1-A151-1F6D70BE1FCE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2023DC2D-89C0-4AB1-A151-1F6D70BE1FCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2023DC2D-89C0-4AB1-A151-1F6D70BE1FCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2023DC2D-89C0-4AB1-A151-1F6D70BE1FCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2023DC2D-89C0-4AB1-A151-1F6D70BE1FCE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C2D74849-4F9D-4A2C-83D8-7B974144B580}
+	EndGlobalSection
+EndGlobal
