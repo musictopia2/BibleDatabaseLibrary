@@ -1,4 +1,5 @@
 ﻿namespace BibleDatabaseLibrary.Entities;
+[SourceGeneratedSerialization]
 public class BookInformation
 {
     public BasicList<ParagraphInformation> ParagraphList { get; set; } = new();

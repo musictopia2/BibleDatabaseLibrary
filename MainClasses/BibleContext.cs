@@ -1,24 +1,10 @@
 ﻿namespace BibleDatabaseLibrary.MainClasses;
 public class BibleContext : IDisposable
 {
-    private readonly Assembly _currentAssembly;
     private bool _disposedValue;
-    public async Task<BasicList<TranslationInformation>> ListTranslationsAsync()
-    {
-        string thisText = await _currentAssembly.ResourcesAllTextFromFileAsync("TranslationList.json");
-        var output = await js.DeserializeObjectAsync<BasicList<TranslationInformation>>(thisText);
-        output.Sort();
-        return output;
-    }
-    public async Task<BasicList<string>> ListBooksAsync()
-    {
-        string thisText = await _currentAssembly.ResourcesAllTextFromFileAsync("booklist.json");
-        var output = await js.DeserializeObjectAsync<BasicList<string>>(thisText);
-        output.Sort();
-        return output;
-    }
-    public string TranslationUsed { get; set; } = "ICB";
-    private string GetBookPath(string bookName) => $"{TranslationUsed} {bookName}.json";
+    private readonly IBookDataService _dataService;
+    private readonly ITranslationService _translationService;
+    public string TranslationUsed { get; set; } = ""; //if somebody chooses a translation that is not valid, hopefully will raise proper errors.
     protected static string GetText(BasicList<string> thisList)
     {
         var cats = new StrCat();
@@ -37,22 +23,14 @@ public class BibleContext : IDisposable
         });
         return cats.GetInfo();
     }
-    public async Task<BookInformation> GetBookInfoAsync(string bookName)
-    {
-        string thisPath = GetBookPath(bookName);
-        string thisText = await _currentAssembly.ResourcesAllTextFromFileAsync(thisPath);
-        return await js.DeserializeObjectAsync<BookInformation>(thisText);
-    }
     public async Task<BasicList<Verse>> GetVersesAsync(string bookName)
     {
         if (bookName == "")
         {
             throw new CustomBasicException("Book Name Can't Be Blank");
         }
-        string thisPath = GetBookPath(bookName);
-        string thisText = await _currentAssembly.ResourcesAllTextFromFileAsync(thisPath);
-        BookInformation thisBook = await js.DeserializeObjectAsync<BookInformation>(thisText);
-        return thisBook.VerseList;
+        BookInformation bookInfo = await _dataService.GetBookInformationAsync(bookName, TranslationUsed);
+        return bookInfo.VerseList;
     }
     public static BasicList<string> GetVerses(BasicList<Verse> thisList)
     {
@@ -115,9 +93,11 @@ public class BibleContext : IDisposable
         var output = GetVerses(firstList);
         return output;
     }
-    public BibleContext()
+    public BibleContext(IBookDataService dataService, ITranslationService translationService)
     {
-        _currentAssembly = Assembly.GetAssembly(GetType())!;
+        _dataService = dataService;
+        _translationService = translationService;
+        TranslationUsed = _translationService.DefaultTranslationAbb;
     }
     protected virtual void Dispose(bool disposing)
     {
@@ -125,7 +105,7 @@ public class BibleContext : IDisposable
         {
             if (disposing)
             {
-                
+
             }
             _disposedValue = true;
         }

@@ -2,19 +2,22 @@
 public class MainBibleViewModel
 {
     private readonly IMessageBox _message;
-    public MainBibleViewModel(IMessageBox message)
+    private readonly ITranslationService _translationService;
+    private readonly IBookDataService _dataService;
+    public MainBibleViewModel(IMessageBox message, ITranslationService translationService, IBookDataService dataService)
     {
         _message = message;
+        _translationService = translationService;
+        _dataService = dataService;
     }
-    private BasicList<Verse> _verseList = new(); //to avoid the risk of null reference exceptions.
+    private BasicList<Verse> _verseList = new();
     public TranslationInformation? Translation { get; set; }
     public int? ManuallySelectedVerse { get; set; }
     public string BookName { get; set; } = "";
     public int Chapter { get; set; }
     public static async Task<BasicList<string>> GetBookListAsync()
     {
-        using var dats = new BibleContext();
-        return await dats.ListBooksAsync(); // i think
+        return await BookListService.GetBookListAsync();
     }
     public BasicList<int> GetVerseList()
     {
@@ -28,10 +31,9 @@ public class MainBibleViewModel
     {
         return _verseList.Where(items => items.Chapter == chapter).Select(items => items.Number).ToBasicList();
     }
-    public static async Task<BasicList<TranslationInformation>> GetTranslationListAsync()
+    public async Task<BasicList<TranslationInformation>> GetTranslationListAsync()
     {
-        using BibleContext dats = new();
-        return await dats.ListTranslationsAsync();
+        return await _translationService.ListTranslationsAsync();
     }
     public BasicList<string> GetText()
     {
@@ -51,14 +53,16 @@ public class MainBibleViewModel
         HistoricData thisVerse = new();
         BookInformation thisBook;
         thisVerse.Book = bookList.GetRandomItem();
-        using (BibleContext dats = new())
+        string translationAbb;
+        if (Translation is not null)
         {
-            if (Translation != null)
-            {
-                dats.TranslationUsed = Translation.TranslationAbb;
-            }
-            thisBook = await dats.GetBookInfoAsync(thisVerse.Book);
+            translationAbb = Translation.TranslationAbb;
         }
+        else
+        {
+            translationAbb = _translationService.DefaultTranslationAbb;
+        }
+        thisBook = await _dataService.GetBookInformationAsync(thisVerse.Book, translationAbb); //i think.
         _verseList = thisBook.VerseList;
         var CList = GetChapterList();
         thisVerse.Chapter = CList.GetRandomItem();
@@ -84,7 +88,7 @@ public class MainBibleViewModel
         int index;
         BookName = ThisHistory.Book;
         index = tempList.IndexOf(thisItem);
-        using (BibleContext bibs = new())
+        using (BibleContext bibs = new(_dataService, _translationService))
         {
             bibs.TranslationUsed = Translation.TranslationAbb;
             thisMobile.TextList = BibleContext.GetVerses(tempList);
@@ -103,7 +107,7 @@ public class MainBibleViewModel
     {
         if (Chapter > 0 && BookName != "")
         {
-            using var dats = new BibleContext();
+            using var dats = new BibleContext(_dataService, _translationService);
             if (Translation != null)
             {
                 dats.TranslationUsed = Translation.TranslationAbb;
@@ -112,9 +116,10 @@ public class MainBibleViewModel
         }
         BibleDelegates.ChoseTranslation.Invoke();
     }
-    public static async Task<BasicList<string>> GetVersesAsync(string translationabb, string bookName, int chapterFrom, int verseFrom, int chapterTo, int verseTo)
+    //no longer static.  hopefully okay.
+    public async Task<BasicList<string>> GetVersesAsync(string translationabb, string bookName, int chapterFrom, int verseFrom, int chapterTo, int verseTo)
     {
-        using var dats = new BibleContext();
+        using var dats = new BibleContext(_dataService, _translationService);
         dats.TranslationUsed = translationabb;
         var output = await dats.GetVersesAsync(bookName, chapterFrom, verseFrom, chapterTo, verseTo);
         return output;
@@ -132,7 +137,7 @@ public class MainBibleViewModel
         }
         Chapter = 0;
         ManuallySelectedVerse = null;
-        using (var dats = new BibleContext())
+        using (var dats = new BibleContext(_dataService, _translationService))
         {
             if (Translation != null)
             {
@@ -193,7 +198,7 @@ public class MainBibleViewModel
         {
             throw new CustomBasicException("You must choose translation in order to manually choose something");
         }
-        using BibleContext dats = new();
+        using BibleContext dats = new(_dataService, _translationService);
         dats.TranslationUsed = Translation.TranslationAbb;
         _verseList = await dats.GetVersesAsync(BookName);
     }
