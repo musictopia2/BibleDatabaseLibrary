@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<Version>2.0.1</Version>
+	<Version>3.0.1</Version>
   </PropertyGroup>
 	<ItemGroup>
 		<None Remove="Resources\booklist.json" />
@@ -15,9 +15,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CommonBasicLibraries" Version="5.0.6" />
-	  <PackageReference Include="JsonDeserializeResourceSourceGenerator" Version="1.0.2"  PrivateAssets="all" />
-	  <PackageReference Include="JsonSerializerContextGenerator" Version="1.0.1"  PrivateAssets="all" />
+	  <PackageReference Include="CommonBasicLibraries" Version="7.0.1" />
+	  <PackageReference Include="JsonDeserializeResourceSourceGenerator" Version="1.0.2" PrivateAssets="all" />
+	  <PackageReference Include="JsonSerializerContextGenerator" Version="1.0.7" PrivateAssets="all" />
 	</ItemGroup>
 	
 </Project>
