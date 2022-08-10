@@ -61,16 +61,17 @@ public class BibleContext : IDisposable
     {
         var firstList = await GetVersesAsync(bookName);
         firstList.KeepConditionalItems(items => items.Chapter >= chapterFrom && items.Chapter <= chapterTo);
-        BasicList<string> output = new();
-        firstList.ForEach(thisItem =>
-        {
-            string newText;
-            string thisInfo = thisItem.Text;
-            thisInfo = thisInfo.Replace(Constants.VBTab, " ");
-            newText = $"{bookName} {thisItem.Chapter}:{thisItem.Number}.  {thisInfo}";
-            output.Add(newText);
-        });
-        return output;
+        return GetVerses(firstList);
+        //BasicList<string> output = new();
+        //firstList.ForEach(thisItem =>
+        //{
+        //    string newText;
+        //    string thisInfo = thisItem.Text;
+        //    thisInfo = thisInfo.Replace(Constants.VBTab, " ");
+        //    newText = $"{bookName} {thisItem.Chapter}:{thisItem.Number}.  {thisInfo}";
+        //    output.Add(newText);
+        //});
+        //return output;
     }
     public async Task<BasicList<string>> GetVersesAsync(string bookName, int chapter, int verseFrom, int verseTo)
     {
