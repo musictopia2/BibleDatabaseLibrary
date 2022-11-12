@@ -16,7 +16,7 @@
 
 	<ItemGroup>
 	  <PackageReference Include="CommonBasicLibraries" Version="7.0.8" />
-	  <PackageReference Include="JsonDeserializeResourceSourceGenerator" Version="1.0.2" PrivateAssets="all" />
+	  <PackageReference Include="JsonDeserializeResourceSourceGenerator" Version="1.0.3" PrivateAssets="all" />
 	  <PackageReference Include="JsonSerializerContextGenerator" Version="1.0.7" PrivateAssets="all" />
 	</ItemGroup>
 	
