@@ -8,3 +8,5 @@ global using CommonBasicLibraries.BasicUIProcesses;
 global using CommonBasicLibraries.AdvancedGeneralFunctionsAndProcesses.Misc;
 global using System.Text.Json.Serialization;
 global using rr1 = BibleDatabaseLibrary.Resources.BookList;
+global using ff1 = CommonBasicLibraries.AdvancedGeneralFunctionsAndProcesses.FileFunctions.FileFunctions;
+global using dd1 = BibleDatabaseLibrary.TranslationStorageHelpers.DefaultTranslationClass;

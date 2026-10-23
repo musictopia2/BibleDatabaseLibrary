@@ -15,7 +15,8 @@
     <AdditionalFiles Include="Resources\BookList.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Musictopia2.CommonBasicLibraries" Version="10.0.1" />
+    <PackageReference Include="Musictopia2.BasicBlazorLibrary" Version="10.0.2" />
+    <PackageReference Include="Musictopia2.CommonBasicLibraries" Version="10.0.2" />
     <PackageReference Include="Musictopia2.JsonDeserializeResourceSourceGenerator" Version="1.0.1" PrivateAssets="all" />
     <PackageReference Include="Musictopia2.JsonSerializerContextGenerator" Version="1.0.1" PrivateAssets="all" />
   </ItemGroup>
